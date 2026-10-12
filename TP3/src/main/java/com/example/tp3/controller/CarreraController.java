@@ -1,9 +1,10 @@
 package com.example.tp3.controller;
 
 import com.example.tp3.dto.CarreraCantidadDTO;
+import com.example.tp3.dto.CarreraRequest;
+import com.example.tp3.dto.CarreraResponse;
+import com.example.tp3.dto.EstudianteResponse;
 import com.example.tp3.dto.ReporteCarreraDTO;
-import com.example.tp3.model.Carrera;
-import com.example.tp3.model.Estudiante;
 import com.example.tp3.service.CarreraService;
 import com.example.tp3.service.estudianteCarreraService;
 import org.springframework.http.HttpStatus;
@@ -32,12 +33,12 @@ public class CarreraController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Carrera crear(@RequestBody Carrera carrera) {
-        return carreraService.crear(carrera);
+    public CarreraResponse crear(@RequestBody CarreraRequest request) {
+        return carreraService.crear(request);
     }
 
     @GetMapping
-    public List<Carrera> obtenerTodas() {
+    public List<CarreraResponse> obtenerTodas() {
         return carreraService.obtenerTodas();
     }
 
@@ -52,7 +53,7 @@ public class CarreraController {
     }
 
     @GetMapping("/{carreraId}/estudiantes")
-    public List<Estudiante> obtenerEstudiantesPorCiudad(
+    public List<EstudianteResponse> obtenerEstudiantesPorCiudad(
             @PathVariable Long carreraId,
             @RequestParam String ciudad
     ) {

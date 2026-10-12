@@ -1,6 +1,7 @@
 package com.example.tp3.controller;
 
-import com.example.tp3.model.Estudiante;
+import com.example.tp3.dto.EstudianteRequest;
+import com.example.tp3.dto.EstudianteResponse;
 import com.example.tp3.service.EstudianteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,22 +26,22 @@ public class EstudianteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Estudiante crear(@RequestBody Estudiante estudiante) {
-        return estudianteService.crear(estudiante);
+    public EstudianteResponse crear(@RequestBody EstudianteRequest request) {
+        return estudianteService.crear(request);
     }
 
     @GetMapping
-    public List<Estudiante> obtenerTodos() {
+    public List<EstudianteResponse> obtenerTodos() {
         return estudianteService.obtenerTodosOrdenados();
     }
 
     @GetMapping("/libreta/{libretaUniversitaria}")
-    public Estudiante obtenerPorLibreta(@PathVariable Integer libretaUniversitaria) {
+    public EstudianteResponse obtenerPorLibreta(@PathVariable Integer libretaUniversitaria) {
         return estudianteService.obtenerPorLibreta(libretaUniversitaria);
     }
 
     @GetMapping("/genero/{genero}")
-    public List<Estudiante> obtenerPorGenero(@PathVariable String genero) {
+    public List<EstudianteResponse> obtenerPorGenero(@PathVariable String genero) {
         return estudianteService.obtenerPorGenero(genero);
     }
 }

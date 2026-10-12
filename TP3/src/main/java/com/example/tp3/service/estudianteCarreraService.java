@@ -1,5 +1,7 @@
 package com.example.tp3.service;
 
+import com.example.tp3.dto.EstudianteResponse;
+import com.example.tp3.dto.MatriculaResponse;
 import com.example.tp3.dto.MatriculacionRequest;
 import com.example.tp3.dto.ReporteCarreraDTO;
 import com.example.tp3.model.Carrera;
@@ -31,7 +33,7 @@ public class estudianteCarreraService {
         this.carreraRepository = carreraRepository;
     }
 
-    public estudianteCarrera matricular(MatriculacionRequest request) {
+    public MatriculaResponse matricular(MatriculacionRequest request) {
         Estudiante estudiante = estudianteRepository
                 .findByLibretaUniversitaria(request.libretaUniversitaria())
                 .orElseThrow(() -> new ResponseStatusException(
@@ -52,14 +54,17 @@ public class estudianteCarreraService {
         matricula.setAntiguedad(request.antiguedad());
         matricula.setAnioGraduacion(request.anioGraduacion());
 
-        return estudianteCarreraRepository.save(matricula);
+        return MatriculaResponse.from(estudianteCarreraRepository.save(matricula));
     }
 
-    public List<Estudiante> obtenerEstudiantesPorCarreraYCiudad(Long carreraId, String ciudad) {
+    public List<EstudianteResponse> obtenerEstudiantesPorCarreraYCiudad(Long carreraId, String ciudad) {
         if (!carreraRepository.existsById(carreraId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe la carrera con id " + carreraId);
         }
-        return estudianteCarreraRepository.buscarEstudiantesPorCarreraYCiudad(carreraId, ciudad);
+        return estudianteCarreraRepository.buscarEstudiantesPorCarreraYCiudad(carreraId, ciudad)
+                .stream()
+                .map(EstudianteResponse::from)
+                .toList();
     }
 
     public List<ReporteCarreraDTO> generarReporte() {

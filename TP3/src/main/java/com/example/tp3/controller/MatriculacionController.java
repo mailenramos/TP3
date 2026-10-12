@@ -1,7 +1,7 @@
 package com.example.tp3.controller;
 
+import com.example.tp3.dto.MatriculaResponse;
 import com.example.tp3.dto.MatriculacionRequest;
-import com.example.tp3.model.estudianteCarrera;
 import com.example.tp3.service.estudianteCarreraService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,7 @@ public class MatriculacionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public estudianteCarrera matricular(@RequestBody MatriculacionRequest request) {
+    public MatriculaResponse matricular(@RequestBody MatriculacionRequest request) {
         return estudianteCarreraService.matricular(request);
     }
 }

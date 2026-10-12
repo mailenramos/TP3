@@ -1,6 +1,5 @@
 package com.example.tp3.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,12 +19,10 @@ public class estudianteCarrera {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estudiante_id", nullable = false)
-    @JsonIgnore
     private Estudiante estudiante;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "carrera_id", nullable = false)
-    @JsonIgnore
     private Carrera carrera;
 
     private Integer anioInscripcion;

@@ -1,6 +1,8 @@
 package com.example.tp3.service;
 
 import com.example.tp3.dto.CarreraCantidadDTO;
+import com.example.tp3.dto.CarreraRequest;
+import com.example.tp3.dto.CarreraResponse;
 import com.example.tp3.model.Carrera;
 import com.example.tp3.repository.CarreraRepository;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,19 @@ public class CarreraService {
         this.carreraRepository = carreraRepository;
     }
 
-    public Carrera crear(Carrera carrera) {
-        return carreraRepository.save(carrera);
+    public CarreraResponse crear(CarreraRequest request) {
+        Carrera carrera = new Carrera();
+        carrera.setNombre(request.nombre());
+        carrera.setDuracion(request.duracion());
+
+        return CarreraResponse.from(carreraRepository.save(carrera));
     }
 
-    public List<Carrera> obtenerTodas() {
-        return carreraRepository.findAllByOrderByNombreAsc();
+    public List<CarreraResponse> obtenerTodas() {
+        return carreraRepository.findAllByOrderByNombreAsc()
+                .stream()
+                .map(CarreraResponse::from)
+                .toList();
     }
 
     public List<CarreraCantidadDTO> obtenerPorCantidadDeInscriptos() {
