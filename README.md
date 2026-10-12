@@ -37,28 +37,32 @@ Al iniciar la aplicación, la clase CsvDataLoader (paquete config) importa los d
 Al terminar, la consola muestra:
 CSV cargados: 15 carreras, 104 estudiantes, 109 matriculaciones.
 
-## Endpoints:
-### Estudiantes — /estudiantes
-Método 		Ruta								Descripción
-______________________________________________________________________________
-POST 			/estudiante							Da de alta un estudiante
-GET 			/estudiantes							Lista todos los estudiantes ordenados por apellido y nombre
-GET 			/estudiantes/libreta/{libretaUniversitaria}			Busca un estudiante por número de libreta (404 si no existe)
-GET			/estudiantes/genero/{genero}				Lista estudiantes por género (sin distinguir mayúsculas)
+## Endpoints
 
-### Carreras — /carreras
-Método 		Ruta								Descripción
-______________________________________________________________________________
-POST 			/carreras 							Da de alta una carrera
-GET 			/carreras							Lista las carreras ordenadas por nombre
-GET 			/carreras/inscriptos						Carreras con inscriptos, ordenadas por cantidad de inscriptos (descendente)
-GET			/carreras/{carreraId}/estudiantes?ciudad={ciudad}	Estudiantes de una carrera filtrados por ciudad
-GET			/carreras/reporte						Reporte por carrera: inscriptos y egresados agrupados por año
+### Estudiantes — `/estudiantes`
 
-### Matriculación — /matriculas
-Método 		Ruta								Descripción
-______________________________________________________________________________
-POST 			/matriculas							Matricula un estudiante (por libreta) en una carrera
+| Método | Ruta | Descripción |
+|---|---|---|
+| POST` | `/estudiantes` | Da de alta un estudiante |
+| `GET` | `/estudiantes` | Lista todos los estudiantes ordenados por apellido y nombre |
+| `GET` | `/estudiantes/libreta/{libretaUniversitaria}` | Busca un estudiante por número de libreta (404 si no existe) |
+| `GET` | `/estudiantes/genero/{genero}` | Lista estudiantes por género (sin distinguir mayúsculas) |
+
+### Carreras — `/carreras`
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `POST` | `/carreras` | Da de alta una carrera |
+| `GET` | `/carreras` | Lista las carreras ordenadas por nombre |
+| `GET` | `/carreras/inscriptos` | Carreras con inscriptos, ordenadas por cantidad de inscriptos (descendente) |
+| `GET` | `/carreras/{carreraId}/estudiantes?ciudad={ciudad}` | Estudiantes de una carrera filtrados por ciudad |
+| `GET` | `/carreras/reporte` | Reporte por carrera: inscriptos y egresados agrupados por año |
+
+### Matriculación — `/matriculas`
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `POST` | `/matriculas` | Matricula un estudiante (por libreta) en una carrera |
 
 ### Ejemplos de uso
 
