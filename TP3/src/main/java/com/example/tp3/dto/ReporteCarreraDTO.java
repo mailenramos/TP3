@@ -1,0 +1,10 @@
+package com.example.tp3.dto;
+
+import java.util.List;
+
+public record ReporteCarreraDTO(
+        String carrera,
+        List<AnioCantidadDTO> inscriptosPorAnio,
+        List<AnioCantidadDTO> egresadosPorAnio
+) {
+}
