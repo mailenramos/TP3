@@ -18,6 +18,8 @@ public class CarreraService {
         this.carreraRepository = carreraRepository;
     }
 
+    // Crea una carrera a partir de los datos recibidos y la guarda en la base de
+    // datos.
     public CarreraResponse crear(CarreraRequest request) {
         Carrera carrera = new Carrera();
         carrera.setNombre(request.nombre());
@@ -26,6 +28,7 @@ public class CarreraService {
         return CarreraResponse.from(carreraRepository.save(carrera));
     }
 
+    // Obtiene todas las carreras ordenadas alfabéticamente por nombre.
     public List<CarreraResponse> obtenerTodas() {
         return carreraRepository.findAllByOrderByNombreAsc()
                 .stream()
@@ -33,6 +36,7 @@ public class CarreraService {
                 .toList();
     }
 
+    // Obtiene las carreras ordenadas por cantidad de inscriptos, de mayor a menor.
     public List<CarreraCantidadDTO> obtenerPorCantidadDeInscriptos() {
         return carreraRepository.obtenerCarrerasPorCantidadDeInscriptos();
     }

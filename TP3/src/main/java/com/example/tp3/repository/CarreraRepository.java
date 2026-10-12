@@ -10,7 +10,9 @@ import java.util.List;
 public interface CarreraRepository extends JpaRepository<Carrera, Long> {
 
     List<Carrera> findAllByOrderByNombreAsc();
+    // Obtiene las carreras con estudiantes matriculados,
 
+    // ordenadas por cantidad de matriculaciones de mayor a menor.
     @Query("""
             SELECT new com.example.tp3.dto.CarreraCantidadDTO(ec.carrera.id, ec.carrera.nombre, COUNT(ec))
             FROM EstudianteCarrera ec

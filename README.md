@@ -3,6 +3,7 @@
 API REST desarrollada con Spring Boot y Spring Data JPA para gestionar estudiantes, carreras y las matriculaciones entre ambos. Incluye consultas y reportes sobre inscriptos y egresados por carrera.
 
 ## Tecnologías
+
 - Java 17
 - Spring Boot 4.1.1 (Web MVC, Data JPA)
 - Hibernate / JPA con consultas JPQL
@@ -15,15 +16,17 @@ estudianteCarrera es la entidad intermedia que resuelve la relación muchos-a-mu
 Un estudiante se graduó en una carrera cuando anioGraduacion tiene valor; si es null, todavía no se graduó.
 
 ## Requisitos previos
+
 - JDK 17 o superior
 
 No hace falta instalar Maven ni una base de datos: se usa el wrapper (mvnw) y H2 en memoria.
 
 ## Cómo ejecutar
+
 En bash:
 git clone https://github.com/mailenramos/TP3.git
 cd TP3/TP3
-./mvnw spring-boot:run 
+./mvnw spring-boot:run
 
 La aplicación queda disponible en http://localhost:8080.
 
@@ -41,33 +44,38 @@ CSV cargados: 15 carreras, 104 estudiantes, 109 matriculaciones.
 
 ### Estudiantes — `/estudiantes`
 
-| Método | Ruta | Descripción |
-|---|---|---|
-| POST` | `/estudiantes` | Da de alta un estudiante |
-| `GET` | `/estudiantes` | Lista todos los estudiantes ordenados por apellido y nombre |
-| `GET` | `/estudiantes/libreta/{libretaUniversitaria}` | Busca un estudiante por número de libreta (404 si no existe) |
-| `GET` | `/estudiantes/genero/{genero}` | Lista estudiantes por género (sin distinguir mayúsculas) |
+| Método | Ruta                                          | Descripción                                                  |
+| ------ | --------------------------------------------- | ------------------------------------------------------------ |
+| `POST` | `/estudiantes`                                | Da de alta un estudiante                                     |
+| `GET`  | `/estudiantes`                                | Lista todos los estudiantes ordenados por apellido y nombre  |
+| `GET`  | `/estudiantes/libreta/{libretaUniversitaria}` | Busca un estudiante por número de libreta (404 si no existe) |
+| `GET`  | `/estudiantes/genero/{genero}`                | Lista estudiantes por género (sin distinguir mayúsculas)     |
 
 ### Carreras — `/carreras`
 
-| Método | Ruta | Descripción |
-|---|---|---|
-| `POST` | `/carreras` | Da de alta una carrera |
-| `GET` | `/carreras` | Lista las carreras ordenadas por nombre |
-| `GET` | `/carreras/inscriptos` | Carreras con inscriptos, ordenadas por cantidad de inscriptos (descendente) |
-| `GET` | `/carreras/{carreraId}/estudiantes?ciudad={ciudad}` | Estudiantes de una carrera filtrados por ciudad |
-| `GET` | `/carreras/reporte` | Reporte por carrera: inscriptos y egresados agrupados por año |
+| Método | Ruta                                                | Descripción                                                                 |
+| ------ | --------------------------------------------------- | --------------------------------------------------------------------------- |
+| `POST` | `/carreras`                                         | Da de alta una carrera                                                      |
+| `GET`  | `/carreras`                                         | Lista las carreras ordenadas por nombre                                     |
+| `GET`  | `/carreras/inscriptos`                              | Carreras con inscriptos, ordenadas por cantidad de inscriptos (descendente) |
+| `GET`  | `/carreras/{carreraId}/estudiantes?ciudad={ciudad}` | Estudiantes de una carrera filtrados por ciudad                             |
+| `GET`  | `/carreras/reporte`                                 | Reporte por carrera: inscriptos y egresados agrupados por año               |
 
 ### Matriculación — `/matriculas`
 
-| Método | Ruta | Descripción |
-|---|---|---|
+| Método | Ruta          | Descripción                                          |
+| ------ | ------------- | ---------------------------------------------------- |
 | `POST` | `/matriculas` | Matricula un estudiante (por libreta) en una carrera |
 
 ### Ejemplos de uso
 
-#### Crear un estudiante:
-POST /estudiantes
+#### Crear un estudiante
+
+**Método:** `POST`  
+**Endpoint:** `/estudiantes`  
+**Body (JSON):**
+
+```json
 {
   "dni": 40123456,
   "nombre": "Ana",
@@ -77,16 +85,28 @@ POST /estudiantes
   "ciudad": "Tandil",
   "libretaUniversitaria": 12345
 }
+```
 
 #### Crear una carrera
-POST /carreras
+
+**Método:** `POST`  
+**Endpoint:** `/carreras`  
+**Body (JSON):**
+
+```json
 {
   "nombre": "TUDAI",
   "duracion": 2
 }
+```
 
 #### Matricular un estudiante en una carrera
-POST /matriculas
+
+**Método:** `POST`  
+**Endpoint:** `/matriculas`  
+**Body (JSON):**
+
+```json
 {
   "libretaUniversitaria": 12345,
   "carreraId": 1,
@@ -94,20 +114,40 @@ POST /matriculas
   "antiguedad": 2,
   "anioGraduacion": null
 }
+```
 
-#### Respuesta de GET /carreras/reporte
+#### Consultar el reporte de carreras
+
+**Método:** `GET`  
+**Endpoint:** `/carreras/reporte`  
+**Respuesta (JSON):**
+
+```json
 [
   {
     "carrera": "TUDAI",
-    "inscriptosPorAnio": [{ "anio": 2017, "cantidad": 4 }],
-    "egresadosPorAnio": [{ "anio": 2022, "cantidad": 2 }]
+    "inscriptosPorAnio": [
+      {
+        "anio": 2017,
+        "cantidad": 4
+      }
+    ],
+    "egresadosPorAnio": [
+      {
+        "anio": 2022,
+        "cantidad": 2
+      }
+    ]
   }
 ]
+```
 
 ## Manejo de errores
+
 Si se referencia un estudiante o una carrera inexistente, la API responde 404 Not Found con un mensaje descriptivo.
 
 ## Pruebas con Postman
+
 En postman/TP3-Estudiantes.postman_collection.json hay una colección con una request por cada consulta de la consigna (desde punto a hasta punto h), más dos casos de error (404). Cada request incluye un test que verifica el código de estado.
 
 Para usarla:

@@ -19,6 +19,8 @@ public class EstudianteService {
         this.estudianteRepository = estudianteRepository;
     }
 
+    // Crea un estudiante a partir de los datos recibidos y lo guarda en la base de
+    // datos.
     public EstudianteResponse crear(EstudianteRequest request) {
         Estudiante estudiante = new Estudiante();
         estudiante.setDni(request.dni());
@@ -32,6 +34,7 @@ public class EstudianteService {
         return EstudianteResponse.from(estudianteRepository.save(estudiante));
     }
 
+    // Obtiene todos los estudiantes ordenados por apellido y nombre.
     public List<EstudianteResponse> obtenerTodosOrdenados() {
         return estudianteRepository.findAllByOrderByApellidoAscNombreAsc()
                 .stream()
@@ -39,15 +42,17 @@ public class EstudianteService {
                 .toList();
     }
 
+    // Busca un estudiante por su número de libreta universitaria.
+    // Si no existe, devuelve un error 404.
     public EstudianteResponse obtenerPorLibreta(Integer libretaUniversitaria) {
         return estudianteRepository.findByLibretaUniversitaria(libretaUniversitaria)
                 .map(EstudianteResponse::from)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "No existe un estudiante con libreta universitaria " + libretaUniversitaria
-                ));
+                        "No existe un estudiante con libreta universitaria " + libretaUniversitaria));
     }
 
+    // Busca estudiantes según su género, sin distinguir mayúsculas y minúsculas.
     public List<EstudianteResponse> obtenerPorGenero(String genero) {
         return estudianteRepository.findByGeneroIgnoreCase(genero)
                 .stream()
