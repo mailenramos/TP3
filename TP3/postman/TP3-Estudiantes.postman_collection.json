@@ -1,0 +1,430 @@
+{
+  "info": {
+    "name": "TP3 Estudiantes",
+    "description": "Pruebas de los servicios REST del TP3. Ejecutar en orden: a) y b) crean el estudiante y la matrícula que usan d) y g).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crear carrera",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/carreras",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carreras"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Carrera de prueba\",\n  \"duracion\": 3\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "a) Alta de estudiante",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Valores únicos en cada ejecución (dni y libreta no pueden repetirse)",
+              "pm.collectionVariables.set('dni', Math.floor(100000000 + Math.random() * 899999999));",
+              "pm.collectionVariables.set('lu', Math.floor(100000 + Math.random() * 899999));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/estudiantes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "estudiantes"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"dni\": {{dni}},\n  \"nombre\": \"Ana\",\n  \"apellido\": \"Pérez\",\n  \"edad\": 22,\n  \"genero\": \"Female\",\n  \"ciudad\": \"Tandil\",\n  \"libretaUniversitaria\": {{lu}}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "b) Matricular estudiante en una carrera",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/matriculas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "matriculas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"libretaUniversitaria\": {{lu}},\n  \"carreraId\": 1,\n  \"anioInscripcion\": 2023,\n  \"antiguedad\": 2,\n  \"anioGraduacion\": null\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "c) Todos los estudiantes (ordenados)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/estudiantes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "estudiantes"
+          ]
+        }
+      }
+    },
+    {
+      "name": "d) Estudiante por libreta",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/estudiantes/libreta/{{lu}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "estudiantes",
+            "libreta",
+            "{{lu}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "e) Estudiantes por género",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/estudiantes/genero/female",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "estudiantes",
+            "genero",
+            "female"
+          ]
+        }
+      }
+    },
+    {
+      "name": "f) Carreras por cantidad de inscriptos",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/carreras/inscriptos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carreras",
+            "inscriptos"
+          ]
+        }
+      }
+    },
+    {
+      "name": "g) Estudiantes de una carrera por ciudad",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/carreras/1/estudiantes?ciudad=Tandil",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carreras",
+            "1",
+            "estudiantes"
+          ],
+          "query": [
+            {
+              "key": "ciudad",
+              "value": "Tandil"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "h) Reporte de inscriptos y egresados por año",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/carreras/reporte",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carreras",
+            "reporte"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Listar carreras",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/carreras",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "carreras"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Error: libreta inexistente (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Libreta inexistente devuelve 404', function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/estudiantes/libreta/999999999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "estudiantes",
+            "libreta",
+            "999999999"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Error: matricular en carrera inexistente (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Carrera inexistente devuelve 404', function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/matriculas",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "matriculas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"libretaUniversitaria\": {{lu}},\n  \"carreraId\": 99999,\n  \"anioInscripcion\": 2023,\n  \"antiguedad\": 1,\n  \"anioGraduacion\": null\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "dni",
+      "value": "100000001"
+    },
+    {
+      "key": "lu",
+      "value": "100001"
+    }
+  ]
+}
